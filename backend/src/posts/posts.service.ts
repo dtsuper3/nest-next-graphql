@@ -11,28 +11,57 @@ export class PostsService {
     @InjectRepository(Post) private postRepository: Repository<Post>,
   ) {}
   create(createPostInput: CreatePostInput) {
+    console.log(createPostInput);
     return this.postRepository.save({
       ...createPostInput,
+      user: createPostInput.user as any,
     });
   }
 
-  findAll() {
-    return this.postRepository.find();
+  findAll(userId: number) {
+    return this.postRepository.find({
+      where: {
+        user: {
+          id: userId,
+        },
+      },
+      relations: ['user'],
+    });
   }
 
-  findOne(id: number) {
-    return this.postRepository.find({
+  findOne(userId: number, id: number) {
+    return this.postRepository.findOne({
+      where: {
+        user: {
+          id: userId,
+        },
+        id,
+      },
+      relations: ['user'],
+    });
+  }
+
+  async update(updatePostInput: UpdatePostInput) {
+    const { body, id } = updatePostInput;
+    await this.postRepository.update(
+      {
+        id,
+      },
+      {
+        body,
+      },
+    );
+
+    return this.postRepository.findOne({
       where: {
         id,
       },
+      relations: ['user'],
     });
   }
 
-  update(id: number, updatePostInput: UpdatePostInput) {
-    return `This action updates a #${id} post`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} post`;
+  async remove(id: number) {
+    await this.postRepository.delete({ id });
+    return null;
   }
 }

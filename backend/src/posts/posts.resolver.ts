@@ -16,29 +16,41 @@ export class PostsResolver {
   @UseGuards(JwtAuthGuard)
   createPost(
     @Args('createPostInput') createPostInput: CreatePostInput,
-    @CurrentUser user: User,
+    @CurrentUser() user: User,
   ) {
-    console.log('user:-', user);
     return this.postsService.create({ ...createPostInput, user: user.id });
   }
 
   @Query(() => [Post], { name: 'posts' })
-  findAll() {
-    return this.postsService.findAll();
+  @UseGuards(JwtAuthGuard)
+  findAll(@CurrentUser() user: User) {
+    return this.postsService.findAll(user.id);
   }
 
   @Query(() => Post, { name: 'post' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.postsService.findOne(id);
+  @UseGuards(JwtAuthGuard)
+  findOne(
+    @Args('id', { type: () => Int }) id: number,
+    @CurrentUser() user: User,
+  ) {
+    return this.postsService.findOne(user.id, id);
   }
 
   @Mutation(() => Post)
-  updatePost(@Args('updatePostInput') updatePostInput: UpdatePostInput) {
-    return this.postsService.update(updatePostInput.id, updatePostInput);
+  @UseGuards(JwtAuthGuard)
+  updatePost(
+    @Args('updatePostInput') updatePostInput: UpdatePostInput,
+    @CurrentUser() user: User,
+  ) {
+    return this.postsService.update(updatePostInput);
   }
 
-  @Mutation(() => Post)
-  removePost(@Args('id', { type: () => Int }) id: number) {
+  @Mutation(() => Post, { nullable: true })
+  @UseGuards(JwtAuthGuard)
+  removePost(
+    @Args('id', { type: () => Int }) id: number,
+    @CurrentUser() user: User,
+  ) {
     return this.postsService.remove(id);
   }
 }

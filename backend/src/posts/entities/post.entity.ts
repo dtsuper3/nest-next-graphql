@@ -21,10 +21,10 @@ export class Post {
   @Field()
   body: string;
 
+  @Field(() => User)
   @JoinColumn({ name: 'userId' })
-  @Field()
   @ManyToOne(() => User, (user) => user.id)
-  user: number;
+  user: User;
 
   @CreateDateColumn()
   @Field()

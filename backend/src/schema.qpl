@@ -18,7 +18,7 @@ scalar DateTime
 type Post {
   id: Int!
   body: String!
-  user: Float!
+  user: User!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -37,7 +37,7 @@ type Query {
 type Mutation {
   createPost(createPostInput: CreatePostInput!): Post!
   updatePost(updatePostInput: UpdatePostInput!): Post!
-  removePost(id: Int!): Post!
+  removePost(id: Int!): Post
   signup(signupUserInput: SignupUserInput!): User!
   login(loginUserInput: LoginUserInput!): LoginResponse!
 }
@@ -48,9 +48,8 @@ input CreatePostInput {
 }
 
 input UpdatePostInput {
-  body: String
-  user: Float
   id: Int!
+  body: String!
 }
 
 input SignupUserInput {

@@ -26,6 +26,7 @@ import { AuthModule } from './auth/auth.module';
       entities: [User],
       synchronize: true,
       autoLoadEntities: true,
+      logging: 'all',
     }),
     UsersModule,
     PostsModule,
