@@ -1,6 +1,6 @@
 Sure! Here's an example README file for the repository "nest-next-graphql":
 
-```
+
 # nest-next-graphql
 
 This is a sample project demonstrating the integration of Nest.js, Next.js, and GraphQL. It provides a boilerplate setup for building server-side rendered applications with a GraphQL API using the Nest.js framework and Next.js for the frontend.
